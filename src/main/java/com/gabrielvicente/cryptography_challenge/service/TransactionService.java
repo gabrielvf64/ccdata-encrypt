@@ -3,6 +3,7 @@ package com.gabrielvicente.cryptography_challenge.service;
 import com.gabrielvicente.cryptography_challenge.entity.TransactionEntity;
 import com.gabrielvicente.cryptography_challenge.repository.TransactionRepository;
 import com.gabrielvicente.cryptography_challenge.request.CreateTransactionRequest;
+import com.gabrielvicente.cryptography_challenge.request.UpdateTransactionRequest;
 import com.gabrielvicente.cryptography_challenge.response.TransactionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,5 +38,14 @@ public class TransactionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return TransactionResponse.toJson(entity);
+    }
+
+    public void updateTransaction(Long id, UpdateTransactionRequest request) {
+
+        TransactionEntity entity = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        entity.setTransactionValue(request.transactionValue());
+        transactionRepository.save(entity);
     }
 }

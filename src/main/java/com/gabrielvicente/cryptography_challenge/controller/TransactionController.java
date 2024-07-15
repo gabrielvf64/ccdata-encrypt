@@ -1,6 +1,7 @@
 package com.gabrielvicente.cryptography_challenge.controller;
 
 import com.gabrielvicente.cryptography_challenge.request.CreateTransactionRequest;
+import com.gabrielvicente.cryptography_challenge.request.UpdateTransactionRequest;
 import com.gabrielvicente.cryptography_challenge.response.TransactionResponse;
 import com.gabrielvicente.cryptography_challenge.service.TransactionService;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,14 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<Void> createTransaction(@RequestBody CreateTransactionRequest request) {
         transactionService.createTransaction(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> updateTransaction(
+            @PathVariable Long id,
+            @RequestBody UpdateTransactionRequest request) {
+        transactionService.updateTransaction(id, request);
         return ResponseEntity.ok().build();
     }
 
