@@ -31,5 +31,11 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TransactionResponse> findById(@PathVariable Long id) {
+        TransactionResponse response = transactionService.findById(id);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

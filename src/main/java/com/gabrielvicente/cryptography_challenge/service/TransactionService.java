@@ -6,7 +6,9 @@ import com.gabrielvicente.cryptography_challenge.request.CreateTransactionReques
 import com.gabrielvicente.cryptography_challenge.response.TransactionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class TransactionService {
@@ -28,5 +30,12 @@ public class TransactionService {
     public Page<TransactionResponse> listAll(int page, int pageSize) {
         Page<TransactionEntity> transactions = transactionRepository.findAll(PageRequest.of(page, pageSize));
         return transactions.map(TransactionResponse::toJson);
+    }
+
+    public TransactionResponse findById(Long id) {
+        TransactionEntity entity = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return TransactionResponse.toJson(entity);
     }
 }
