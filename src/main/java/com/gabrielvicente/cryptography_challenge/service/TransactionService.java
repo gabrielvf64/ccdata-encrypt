@@ -34,18 +34,27 @@ public class TransactionService {
     }
 
     public TransactionResponse findById(Long id) {
-        TransactionEntity entity = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        TransactionEntity entity = checkIfThereIsATransaction(id);
         return TransactionResponse.toJson(entity);
     }
 
-    public void updateTransaction(Long id, UpdateTransactionRequest request) {
 
-        TransactionEntity entity = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    public void updateTransaction(Long id, UpdateTransactionRequest request) {
+        TransactionEntity entity = checkIfThereIsATransaction(id);
 
         entity.setTransactionValue(request.transactionValue());
+
         transactionRepository.save(entity);
+    }
+
+    public void deleteById(Long id) {
+        TransactionEntity entity = checkIfThereIsATransaction(id);
+        transactionRepository.delete(entity);
+    }
+
+    private TransactionEntity checkIfThereIsATransaction(Long id) {
+        return transactionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

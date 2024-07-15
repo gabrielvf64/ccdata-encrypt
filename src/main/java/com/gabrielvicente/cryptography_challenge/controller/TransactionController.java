@@ -30,7 +30,7 @@ public class TransactionController {
             @PathVariable Long id,
             @RequestBody UpdateTransactionRequest request) {
         transactionService.updateTransaction(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -44,6 +44,12 @@ public class TransactionController {
     public ResponseEntity<TransactionResponse> findById(@PathVariable Long id) {
         TransactionResponse response = transactionService.findById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        transactionService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
